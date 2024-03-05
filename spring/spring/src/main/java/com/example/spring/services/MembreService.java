@@ -8,4 +8,6 @@ public interface MembreService {
     void addNewMembre(Membre membre);
     void deleteMembre(Long membreId);
     void updateMembre(Long membreId, String nom, String prenom, String adresse, Integer age);
+
+    Membre getMembreParNom(String nom);
 }

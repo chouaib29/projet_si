@@ -18,10 +18,15 @@ public class MembreController {
         this.membreService = membreService;
     }
 
-    @GetMapping
+    @GetMapping("/lister")
     public List<Membre> getMembre() {
         return membreService.getMembre();
     }
+    @GetMapping("/chercherParNom")
+    public Membre getMembreParNom(@RequestParam String nom) {
+        return membreService.getMembreParNom(nom);
+    }
+
 
     @PostMapping
     public void registerNewMembre(@RequestBody Membre membre) {

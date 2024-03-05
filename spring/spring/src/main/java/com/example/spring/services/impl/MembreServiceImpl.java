@@ -76,4 +76,21 @@ public class MembreServiceImpl implements MembreService {
         membreRepository.save(membre);
     }
 
+    public Membre getMembreParNom(String nom){
+
+        List<Membre> membres = membreRepository.findByNom(nom);
+
+        // Si vous utilisez Spring Data JPA, vous pouvez définir une méthode findByNom dans votre repository
+        // List<Membre> membres = membreRepository.findByNom(nom);
+
+        // Gérez le cas où aucun membre n'est trouvé avec le nom spécifié
+        if (membres.isEmpty()) {
+            return null; // Ou vous pouvez lever une exception, selon vos besoins
+        }
+
+        // Retournez le premier membre trouvé avec le nom spécifié
+        return membres.get(0);
+
+    }
+
 }
