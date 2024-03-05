@@ -27,7 +27,6 @@ public class MembreController {
         return membreService.getMembreParNom(nom);
     }
 
-
     @PostMapping
     public void registerNewMembre(@RequestBody Membre membre) {
         membreService.addNewMembre(membre);

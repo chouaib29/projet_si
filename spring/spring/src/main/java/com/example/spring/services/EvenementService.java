@@ -12,4 +12,7 @@ public interface EvenementService {
     void updateEvent(Long eventId, String name, Date date_heure, Long lieu_id, Integer nbMaxParticipants);
 
     List<EvenementDTO> getAllEvents();
+
+    boolean isTimeConflict(EvenementDTO event1, EvenementDTO event2);
+    boolean isTimeConflict(Evenement event1, Evenement event2);
 }

@@ -2,6 +2,7 @@ package com.example.spring.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -105,6 +106,10 @@ public class Membre {
                 ", age=" + age +
                 ", adresse='" + adresse + '\'' +
                 '}';
+    }
+
+    public Set<Evenement> getEvenements() {
+        return evenementsInscrits;
     }
 }
 

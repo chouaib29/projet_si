@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -109,6 +110,10 @@ public class Evenement {
 
     public void setNombreMaxParticipants(Integer nombreMaxParticipants) {
         this.nombreMaxParticipants = nombreMaxParticipants;
+    }
+
+    public Set<Membre> getMembres() {
+        return membres;
     }
 }
 

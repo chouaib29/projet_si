@@ -62,7 +62,7 @@ public class EvenementServiceImpl implements EvenementService {
         return EvenementEntityToDao(newEvent);
     }
 
-    private boolean isTimeConflict(EvenementDTO event1, EvenementDTO event2) {
+    public boolean isTimeConflict(EvenementDTO event1, EvenementDTO event2) {
         Date debut1 = event1.getDate_heure();
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setTime(debut1);
@@ -79,7 +79,13 @@ public class EvenementServiceImpl implements EvenementService {
         return (debut1.before(fin2) && fin1.after(debut2)) || (debut2.before(fin1) && fin2.after(debut1));
     }
 
+    public boolean isTimeConflict(Evenement event1, Evenement event2) {
+        EvenementDTO dto1 = EvenementEntityToDao(event1);
+        EvenementDTO dto2 = EvenementEntityToDao(event2);
 
+        // Appelle la première méthode avec les objets EvenementDTO convertis
+        return isTimeConflict(dto1, dto2);
+    }
 
     /**
      * Supprime un événement de la base de données par son identifiant.

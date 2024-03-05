@@ -1,12 +1,18 @@
 package com.example.spring.services.impl;
 
+import com.example.spring.dtos.EvenementDTO;
+import com.example.spring.entities.Evenement;
 import com.example.spring.entities.Membre;
+import com.example.spring.repositories.EvenementRepository;
 import com.example.spring.repositories.MembreRepository;
+import com.example.spring.services.EvenementService;
 import com.example.spring.services.MembreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,10 +21,14 @@ import java.util.Optional;
 public class MembreServiceImpl implements MembreService {
 
     private final MembreRepository membreRepository;
+    private final EvenementRepository evenementRepository;
+    private final EvenementService evenementService; // Needed for adding Membre to Event
 
     @Autowired
-    public MembreServiceImpl(MembreRepository membreRepository){
+    public MembreServiceImpl(MembreRepository membreRepository, EvenementRepository evenementRepository, EvenementService evenementService){
         this.membreRepository = membreRepository;
+        this.evenementRepository = evenementRepository;
+        this.evenementService = evenementService;
     }
 
     public List<Membre> getMembre() {
@@ -91,6 +101,37 @@ public class MembreServiceImpl implements MembreService {
         // Retournez le premier membre trouvé avec le nom spécifié
         return membres.get(0);
 
+    }
+
+    public void registerMembreToEvent(Long membreId, Long eventId) {
+        Membre membre = membreRepository.findById(membreId)
+                .orElseThrow(() -> new IllegalStateException("Membre with id " + membreId + " doesn't exist"));
+
+        Evenement event = evenementRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalStateException("Evenement with id " + eventId + " doesn't exist"));
+
+        // Si l'évenement est déjà passé, throw exception
+        if (event.getDateHeure().before(new Date())) {
+            throw new IllegalStateException("Event with id " + eventId + " has already taken place");
+        }
+
+        // La capacité maximale est atteinte
+        if (event.getMembres().size() >= event.getNombreMaxParticipants()) {
+            throw new IllegalStateException("Event with id " + eventId + " is at capacity");
+        }
+
+        // Vérifier si le membre est déjà inscrit à un événement qui se chevauche
+        if (membre.getEvenements().stream().anyMatch(existingEvent -> isTimeConflict(existingEvent, event))) {
+            throw new IllegalStateException("Member with id " + membreId + " is already registered for an overlapping event");
+        }
+
+        // Tout est bon
+        membre.getEvenements().add(event);
+        membreRepository.save(membre);
+    }
+
+    private boolean isTimeConflict(Evenement event1, Evenement event2) {
+        return evenementService.isTimeConflict(event1, event2);
     }
 
 }
