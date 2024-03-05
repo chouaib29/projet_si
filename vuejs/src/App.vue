@@ -1,42 +1,6 @@
 <template>
-  <nav v-if="isLoggedInAdmin">
-    <router-link to="/">Accueil</router-link> |  
-    <router-link to="/concerts">Concerts</router-link> |
-    <router-link to="/membres">Membres</router-link> |
-    <router-link to="/evenements">Evenements</router-link> |
-    <router-link to="/soirees">Soirees</router-link> |
-    <router-link to="/salles">Salles</router-link> |
-    <router-link to="/groupes">Groupes</router-link> |
-    <router-link to="/artistes">Artistes</router-link> |
-    <router-link to="/ressources">Ressources</router-link>|
-    <router-link to="/utilisateurs">Utilisateurs</router-link>|
-    <router-link to="/compte">Mon Compte</router-link>|
-    <router-link to="/connexion">Connexion</router-link>
-  </nav>
-  <nav v-else-if="isLoggedIn">
-    <router-link to="/">Accueil</router-link> |
-    <router-link to="/concerts">Concerts</router-link> |
-    <router-link to="/membres">Membres</router-link> |
-    <router-link to="/evenements">Evenements</router-link> |
-    <router-link to="/soirees">Soirees</router-link> |
-    <router-link to="/salles">Salles</router-link> |
-    <router-link to="/groupes">Groupes</router-link> |
-    <router-link to="/artistes">Artistes</router-link> |
-    <router-link to="/ressources">Ressources</router-link>|
-    <router-link to="/compte">Mon Compte</router-link>|
-    <router-link to="/connexion">Connexion</router-link>
-  </nav>
-  <nav v-else>
-    <router-link to="/">Accueil</router-link> |
-    <router-link to="/concerts">Concerts</router-link> |
-    <router-link to="/membres">Membres</router-link> |
-    <router-link to="/evenements">Evenements</router-link> |
-    <router-link to="/soirees">Soirees</router-link> |
-    <router-link to="/salles">Salles</router-link> |
-    <router-link to="/groupes">Groupes</router-link> |
-    <router-link to="/artistes">Artistes</router-link> |
-    <router-link to="/ressources">Ressources</router-link>|
-    <router-link to="/connexion">Connexion</router-link>
+  <nav>
+    <router-link to="/">Accueil</router-link>
   </nav>
   <router-view />
 </template>
@@ -48,28 +12,6 @@ export default {
       isLoggedInAdmin: "",
       isLoggedIn: "",
     };
-  },
-  mounted() {
-    this.isLogin();
-
-  },
-  methods: {
-    isLogin() {
-        // Récupérez le nom d'utilisateur dans le stockage local du navigateur
-        const username = localStorage.getItem('nom');
-        // Vérifiez si l'utilisateur est connecté
-        if (username==="admin") {
-            this.isLoggedInAdmin = true;
-            this.isLoggedIn=true;
-        }else if (username!==null){
-            this.isLoggedInAdmin = false;
-            this.isLoggedIn=true;
-        }else{
-            this.isLoggedInAdmin = false;
-            this.isLoggedIn=false;
-        }
-        console.log(this.isLoggedInAdmin);
-    },
   },
 };
 </script>

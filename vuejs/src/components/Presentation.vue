@@ -6,7 +6,6 @@
     <h2>Présentation de l'équipe</h2>
     <p>Professeur : Éric <strong>Cariou</strong></p>
     <p>Professeur : Lévy <strong>Marques</strong></p>
-    <p>Chouaib <strong>Daili</strong> | Anas <strong>Fouad</strong> | Moetez <strong>Chouikha</strong> | Mohamed Amine <strong>EL MOH</strong></p>
   </div>
 </template>
 
