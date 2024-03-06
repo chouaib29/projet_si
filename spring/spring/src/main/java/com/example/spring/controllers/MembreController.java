@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping(path = "api/v1/membre")
 public class MembreController {
@@ -59,5 +58,4 @@ public class MembreController {
     public void registerMembreToEvent(@RequestParam Long membreId, @RequestParam Long eventId) {
         membreService.registerMembreToEvent(membreId, eventId);
     }
-
 }
