@@ -140,9 +140,9 @@ public class EvenementServiceImpl implements EvenementService {
     @Override
     public List<EvenementDTO> getAllEvents() {
         List<EvenementDTO> evenementDtosList = new ArrayList<>();
-        List<Evenement> concertList = evenementRepository.findAll();
-        for (Evenement concert : concertList){
-            evenementDtosList.add(EvenementEntityToDao(concert));
+        List<Evenement> evenementList = evenementRepository.findAll();
+        for (Evenement evenement : evenementList){
+            evenementDtosList.add(EvenementEntityToDao(evenement));
         }
         return evenementDtosList;
     }
