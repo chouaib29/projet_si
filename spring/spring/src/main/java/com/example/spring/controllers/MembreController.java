@@ -1,5 +1,6 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dtos.MembreDTO;
 import com.example.spring.entities.Membre;
 import com.example.spring.services.impl.MembreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,10 @@ public class MembreController {
     }
 
     @GetMapping("/lister")
-    public List<Membre> getMembre() {
-        return membreService.getMembre();
+    public List<MembreDTO> getMembreDTO() {
+        return membreService.getMembreDTO();
     }
+
     @GetMapping("/chercherParNom")
     public Membre getMembreParNom(@RequestParam String nom) {
         return membreService.getMembreParNom(nom);
@@ -52,4 +54,10 @@ public class MembreController {
                 adresse,
                 age);
     }
+
+    @PostMapping("/registerToEvent")
+    public void registerMembreToEvent(@RequestParam Long membreId, @RequestParam Long eventId) {
+        membreService.registerMembreToEvent(membreId, eventId);
+    }
+
 }

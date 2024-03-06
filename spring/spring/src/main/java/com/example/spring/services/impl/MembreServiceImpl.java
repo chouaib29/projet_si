@@ -1,6 +1,6 @@
 package com.example.spring.services.impl;
 
-import com.example.spring.dtos.EvenementDTO;
+import com.example.spring.dtos.MembreDTO;
 import com.example.spring.entities.Evenement;
 import com.example.spring.entities.Membre;
 import com.example.spring.repositories.EvenementRepository;
@@ -9,13 +9,13 @@ import com.example.spring.services.EvenementService;
 import com.example.spring.services.MembreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service // or @Componant
 public class MembreServiceImpl implements MembreService {
@@ -31,8 +31,21 @@ public class MembreServiceImpl implements MembreService {
         this.evenementService = evenementService;
     }
 
-    public List<Membre> getMembre() {
-        return membreRepository.findAll();
+    public List<MembreDTO> getMembreDTO() {
+        List<Membre> membres = membreRepository.findAll();
+        return membres.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MembreDTO convertToDTO(Membre membre) {
+        MembreDTO membreDTO = new MembreDTO();
+        membreDTO.setNom(membre.getNom());
+        membreDTO.setPrenom(membre.getPrenom());
+        membreDTO.setAge(membre.getAge());
+        membreDTO.setAdresse(membre.getAdresse());
+
+        return membreDTO;
     }
 
     public void addNewMembre(Membre membre) {
@@ -46,8 +59,6 @@ public class MembreServiceImpl implements MembreService {
         }
         membreRepository.save(membre);
     }
-
-
 
     public void deleteMembre(Long membreId) {
         boolean exists = membreRepository.existsById(membreId);
@@ -127,7 +138,10 @@ public class MembreServiceImpl implements MembreService {
 
         // Tout est bon
         membre.getEvenements().add(event);
+        event.getMembres().add(membre);
+
         membreRepository.save(membre);
+        evenementRepository.save(event);
     }
 
     private boolean isTimeConflict(Evenement event1, Evenement event2) {
