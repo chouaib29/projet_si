@@ -23,7 +23,7 @@ const routes = [
   {
     path: "/lieux",
     name: "lieux",
-    component: EvenementView,
+    component: LieuView,
   },
 ];
 
