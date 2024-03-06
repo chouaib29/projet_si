@@ -40,7 +40,7 @@ export default {
   methods: {
     chargerLieux() {
       axios
-        .get("http://localhost:8080/api/v1/lieux")
+        .get("http://localhost:8082/api/v1/lieux")
         .then((response) => {
           this.lieux = response.data;
         })

@@ -44,7 +44,7 @@ export default {
   methods: {
     chargerEvenements() {
       axios
-        .get("http://localhost:8080/api/v1/evenements")
+        .get("http://localhost:8082/api/v1/evenement/getAllEvenement")
         .then((response) => {
           this.evenements = response.data;
         })
@@ -58,7 +58,7 @@ export default {
     },
     supprimerEvenement(id) {
       axios
-        .delete(`http://localhost:8080/api/v1/evenements/${id}`)
+        .delete(`http://localhost:8082/api/v1/evenement/${id}`)
         .then(() => this.chargerEvenements())
         .catch((error) =>
           console.error("Erreur lors de la suppression de l'événement", error)
