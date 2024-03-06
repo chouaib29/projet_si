@@ -20,8 +20,12 @@
           <td>{{ lieu.adresse }}</td>
           <td>{{ lieu.capacite }}</td>
           <td>
-            <button v-if="isLoggedInAdmin" @click="editLieu(lieu)">Modifier</button>
-            <button v-if="isLoggedInAdmin" @click="deleteLieu(lieu.idLieu)">Supprimer</button>
+            <button v-if="isLoggedInAdmin" @click="editLieu(lieu)">
+              Modifier
+            </button>
+            <button v-if="isLoggedInAdmin" @click="deleteLieu(lieu.idLieu)">
+              Supprimer
+            </button>
             <button @click="lieuVu = lieu">Voir plus</button>
           </td>
         </tr>
@@ -87,39 +91,45 @@ export default {
   },
   methods: {
     getLieux() {
-      axios.get(this.url)
-        .then(response => {
+      axios
+        .get(this.url)
+        .then((response) => {
           this.lieux = response.data;
           // Update status and message handling as needed
         })
-        .catch(error => console.error("There was an error loading the venues:", error));
+        .catch((error) =>
+          console.error("There was an error loading the venues:", error)
+        );
     },
     addLieu() {
-      axios.post(this.url, this.nouveauLieu)
+      axios
+        .post(this.url, this.nouveauLieu)
         .then(() => {
           this.resetNouveauLieu();
           this.getLieux();
         })
-        .catch(error => console.error("Error adding venue:", error));
+        .catch((error) => console.error("Error adding venue:", error));
     },
     editLieu(lieu) {
       this.lieuSelectionne = { ...lieu };
     },
     updateLieu() {
-      axios.put(`${this.url}/${this.lieuSelectionne.idLieu}`, this.lieuSelectionne)
+      axios
+        .put(`${this.url}/${this.lieuSelectionne.idLieu}`, this.lieuSelectionne)
         .then(() => {
           this.lieuSelectionne = null;
           this.getLieux();
         })
-        .catch(error => console.error("Error updating venue:", error));
+        .catch((error) => console.error("Error updating venue:", error));
     },
     deleteLieu(id) {
-      axios.delete(`${this.url}/${id}`)
+      axios
+        .delete(`${this.url}/${id}`)
         .then(() => this.getLieux())
-        .catch(error => console.error("Error deleting venue:", error));
+        .catch((error) => console.error("Error deleting venue:", error));
     },
     isLoginAdmin() {
-      const username = localStorage.getItem('nom');
+      const username = localStorage.getItem("nom");
       this.isLoggedInAdmin = username === "admin";
     },
     resetNouveauLieu() {
@@ -128,10 +138,10 @@ export default {
         adresse: null,
         capacite: null,
       };
-    }
+    },
   },
   components: {
-    VoirElement
-  }
+    VoirElement,
+  },
 };
 </script>

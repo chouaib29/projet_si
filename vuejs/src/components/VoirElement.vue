@@ -34,20 +34,11 @@ export default {
 
     if (this.el.type === "membre") {
       // affiche les artistes du groupe
-      let url = "http://localhost:8080/projet_sys_info/afiiche";
-      axios
-        .get(url)
-        .then((response) => {
-
-
-
-          console.log(this.el);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      let url = "http://localhost:8080/projet_sys_info";
+      axios.get(url).catch((error) => {
+        console.log(error);
+      });
     }
-    }
-
+  },
 };
 </script>
