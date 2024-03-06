@@ -158,7 +158,7 @@ public class EvenementServiceImpl implements EvenementService {
         evenementDTO.setDate_heure(evenement.getDateHeure());
         evenementDTO.setDuree(evenement.getDuree());
         evenementDTO.setDuree(evenement.getDuree());
-        evenementDTO.setLieu_id(evenement.getLieu().getId());
+        evenementDTO.setLieu_id(evenement.getLieu());
         evenementDTO.setNombreMaxParticipants(evenement.getNombreMaxParticipants());
         return evenementDTO;
     }
@@ -177,7 +177,7 @@ public class EvenementServiceImpl implements EvenementService {
 
         // create new SoireeEntity and set its ID
         Lieu lieu = new Lieu();
-        lieu.setId(evenementDTO.getLieu_id());
+        lieu.setId(evenementDTO.getLieu_id().getId());
         evenement.setLieu(lieu.getId());
 
 

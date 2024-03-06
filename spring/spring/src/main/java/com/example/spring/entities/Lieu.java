@@ -1,6 +1,7 @@
 package com.example.spring.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -22,8 +23,7 @@ public class Lieu {
     @Column(name = "capaciteAccueil", nullable = false)
     private int capaciteAccueil;
 
-    @OneToMany(mappedBy = "lieu_id")
-    private Set<Evenement> evenements;
+
 
     // Constructeurs
 
@@ -71,12 +71,6 @@ public class Lieu {
         this.capaciteAccueil = capaciteAccueil;
     }
 
-    public Set<Evenement> getEvenements() {
-        return evenements;
-    }
 
-    public void setEvenements(Set<Evenement> evenements) {
-        this.evenements = evenements;
-    }
 }
 

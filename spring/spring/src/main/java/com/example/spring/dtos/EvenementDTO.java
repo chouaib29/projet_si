@@ -1,5 +1,6 @@
 package com.example.spring.dtos;
 
+import com.example.spring.entities.Lieu;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ public class EvenementDTO {
     private String nom;
     private Date date_heure;
     private double duree;
-    private Long lieu_id;
+    private Lieu lieu_id;
     private Integer nombreMaxParticipants;
 
 }
