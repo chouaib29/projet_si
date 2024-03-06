@@ -34,7 +34,7 @@ public class MembreController {
         membreService.addNewMembre(membre);
     }
 
-    @DeleteMapping(path = "{membreId}")
+    @DeleteMapping(path ="{membreId}")
     public void deleteMembre(@PathVariable("membreId") Long membreId) {
         membreService.deleteMembre(membreId);
     }
