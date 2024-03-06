@@ -25,6 +25,7 @@ public class MembreController {
     public List<MembreDTO> getMembreDTO() {
         return membreService.getMembreDTO();
     }
+
     @GetMapping("/chercherParNom")
     public Membre getMembreParNom(@RequestParam String nom) {
         return membreService.getMembreParNom(nom);
@@ -53,4 +54,10 @@ public class MembreController {
                 adresse,
                 age);
     }
+
+    @PostMapping("/registerToEvent")
+    public void registerMembreToEvent(@RequestParam Long membreId, @RequestParam Long eventId) {
+        membreService.registerMembreToEvent(membreId, eventId);
+    }
+
 }

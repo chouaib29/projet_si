@@ -13,6 +13,6 @@ public interface MembreRepository extends JpaRepository<Membre, Long> {
 
     Optional<Membre> findMembreByNomAndPrenom(String nom, String Prenom);
     boolean existsByNomAndPrenom(String nom, String prenom);
-    @Query("SELECT s from Membre s where s.nom = ?1")
+    @Query("SELECT s FROM Membre s WHERE LOWER(s.nom) = LOWER(?1)")
     List<Membre> findByNom(String nom);
 }

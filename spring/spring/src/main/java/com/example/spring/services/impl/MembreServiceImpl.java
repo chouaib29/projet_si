@@ -1,6 +1,5 @@
 package com.example.spring.services.impl;
 
-import com.example.spring.dtos.EvenementDTO;
 import com.example.spring.dtos.MembreDTO;
 import com.example.spring.entities.Evenement;
 import com.example.spring.entities.Membre;
@@ -10,7 +9,6 @@ import com.example.spring.services.EvenementService;
 import com.example.spring.services.MembreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,11 +30,6 @@ public class MembreServiceImpl implements MembreService {
         this.evenementRepository = evenementRepository;
         this.evenementService = evenementService;
     }
-
-    public List<Membre> getMembre() {
-        return membreRepository.findAll();
-    }
-
 
     public List<MembreDTO> getMembreDTO() {
         List<Membre> membres = membreRepository.findAll();
@@ -66,8 +59,6 @@ public class MembreServiceImpl implements MembreService {
         }
         membreRepository.save(membre);
     }
-
-
 
     public void deleteMembre(Long membreId) {
         boolean exists = membreRepository.existsById(membreId);
@@ -119,7 +110,7 @@ public class MembreServiceImpl implements MembreService {
         }
 
         // Retournez le premier membre trouvé avec le nom spécifié
-        return membres.getFirst();
+        return membres.get(0);
 
     }
 
@@ -147,7 +138,10 @@ public class MembreServiceImpl implements MembreService {
 
         // Tout est bon
         membre.getEvenements().add(event);
+        event.getMembres().add(membre);
+
         membreRepository.save(membre);
+        evenementRepository.save(event);
     }
 
     private boolean isTimeConflict(Evenement event1, Evenement event2) {
