@@ -14,7 +14,7 @@ public class LieuController {
     @Autowired
     private LieuServiceImpl lieuService;
 
-    @GetMapping
+    @GetMapping("/lister")
     public List<Lieu> getAllLieux() {
         return lieuService.getAllLieux();
     }
