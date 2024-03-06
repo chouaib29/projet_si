@@ -15,9 +15,11 @@
       <tbody>
         <tr v-for="evenement in evenements" :key="evenement.id">
           <td>{{ evenement.nom }}</td>
-          <td>{{ evenement.dateHeure }}</td>
+          <td>{{ evenement.date_heure }}</td>
+          <!-- Utilisez la propriété correcte -->
           <td>{{ evenement.duree }}</td>
-          <td>{{ evenement.lieu }}</td>
+          <td>{{ evenement.lieu.id }}</td>
+          <!-- Utilisez la propriété correcte du lieu -->
           <td>{{ evenement.nombreMaxParticipants }}</td>
           <td>
             <button @click="modifierEvenement(evenement)">Modifier</button>
@@ -46,12 +48,17 @@ export default {
       axios
         .get("http://localhost:8082/api/v1/evenement/getAllEvenement")
         .then((response) => {
+          console.log("Réponse de l'API:", response.data);
           this.evenements = response.data;
         })
         .catch((error) =>
-          console.error("Erreur lors du chargement des événements", error)
+          console.error(
+            "Erreur lors du chargement des événements. Statut de la réponse :",
+            error.response.status
+          )
         );
     },
+
     modifierEvenement(evenement) {
       // Logique pour modifier un événement, peut-être via un formulaire ou une redirection vers un composant de modification
       console.log("Modifier l'événement:", evenement.id);

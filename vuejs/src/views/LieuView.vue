@@ -1,6 +1,8 @@
 <template>
   <div class="lieux">
     <h1>Liste des Lieux</h1>
+    <p id="statusLieu"></p>
+    <p id="messageLieu"></p>
     <table>
       <thead>
         <tr>
@@ -16,8 +18,10 @@
           <td>{{ lieu.adresse }}</td>
           <td>{{ lieu.capaciteAccueil }}</td>
           <td>
-            <button @click="modifierLieu(lieu)">Modifier</button>
-            <button @click="supprimerLieu(lieu.id)">Supprimer</button>
+            <button @click="voirEvenements(lieu.id)">Voir Événements</button>
+          </td>
+          <td>
+            <button @click="supprimerMembre(lieu.id)">Supprimer</button>
           </td>
         </tr>
       </tbody>
@@ -32,29 +36,42 @@ export default {
   data() {
     return {
       lieux: [],
+      url: "http://localhost:8082/api/v1/lieux/lister", // Assurez-vous que c'est le bon URL
     };
-  },
-  mounted() {
-    this.chargerLieux();
   },
   methods: {
     chargerLieux() {
       axios
-        .get("http://localhost:8082/api/v1/lieux")
+        .get(this.url)
         .then((response) => {
+          console.log(
+            "Afficher les événements pour le membre ID:",
+            response.data
+          );
+          this.setStatusEtMessage(response, "Lieu"); // Utilisez une méthode pour éviter la répétition
           this.lieux = response.data;
         })
-        .catch((error) =>
-          console.error("Erreur lors du chargement des lieux", error)
-        );
+        .catch((error) => {
+          console.error("Erreur lors du chargement des lieux", error);
+        });
     },
     supprimerLieu(id) {
       axios
-        .delete(`http://localhost:8080/api/v1/lieux/${id}`)
-        .then(() => this.chargerLieux())
-        .catch((error) =>
-          console.error("Erreur lors de la suppression du lieu", error)
-        );
+        .delete(`${this.url}/${id}`)
+        .then((response) => {
+          this.setStatusEtMessage(response, "Lieu");
+          this.chargerLieux();
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la suppression du lieu", error);
+        });
+    },
+    setStatusEtMessage(response, type) {
+      document.getElementById(`status${type}`).innerHTML =
+        "Status : " +
+        (response.status >= 200 && response.status < 300 ? "OK" : "KO");
+      document.getElementById(`message${type}`).innerHTML =
+        "Message : " + response.status;
     },
   },
 };

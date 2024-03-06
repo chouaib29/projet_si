@@ -45,6 +45,10 @@ export default {
       axios
         .get("http://localhost:8082/api/v1/membre/lister")
         .then((response) => {
+          console.log(
+            "Afficher les événements pour le membre ID:",
+            response.data
+          );
           this.membres = response.data;
         })
         .catch((error) =>
@@ -57,7 +61,7 @@ export default {
     },
     supprimerMembre(id) {
       axios
-        .delete(`http://localhost:8080/api/v1/membres/${id}`)
+        .delete(`http://localhost:8082/api/v1/membre/${id}`)
         .then(() => this.chargerMembres())
         .catch((error) =>
           console.error("Erreur lors de la suppression", error)

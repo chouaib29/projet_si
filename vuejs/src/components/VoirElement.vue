@@ -34,7 +34,7 @@ export default {
 
     if (this.el.type === "membre") {
       // affiche les artistes du groupe
-      let url = "http://localhost:8080/projet_sys_info";
+      let url = "http://localhost:8082/api/v1/membre/lister";
       axios.get(url).catch((error) => {
         console.log(error);
       });
