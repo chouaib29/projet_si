@@ -1,6 +1,7 @@
 package com.example.spring.services.impl;
 
 import com.example.spring.dtos.EvenementDTO;
+import com.example.spring.dtos.MembreDTO;
 import com.example.spring.entities.Evenement;
 import com.example.spring.entities.Membre;
 import com.example.spring.repositories.EvenementRepository;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service // or @Componant
 public class MembreServiceImpl implements MembreService {
@@ -33,6 +35,24 @@ public class MembreServiceImpl implements MembreService {
 
     public List<Membre> getMembre() {
         return membreRepository.findAll();
+    }
+
+
+    public List<MembreDTO> getMembreDTO() {
+        List<Membre> membres = membreRepository.findAll();
+        return membres.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MembreDTO convertToDTO(Membre membre) {
+        MembreDTO membreDTO = new MembreDTO();
+        membreDTO.setNom(membre.getNom());
+        membreDTO.setPrenom(membre.getPrenom());
+        membreDTO.setAge(membre.getAge());
+        membreDTO.setAdresse(membre.getAdresse());
+
+        return membreDTO;
     }
 
     public void addNewMembre(Membre membre) {
@@ -99,7 +119,7 @@ public class MembreServiceImpl implements MembreService {
         }
 
         // Retournez le premier membre trouvé avec le nom spécifié
-        return membres.get(0);
+        return membres.getFirst();
 
     }
 

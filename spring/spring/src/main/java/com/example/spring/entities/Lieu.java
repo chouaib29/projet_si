@@ -23,8 +23,6 @@ public class Lieu {
     @Column(name = "capaciteAccueil", nullable = false)
     private int capaciteAccueil;
 
-
-
     // Constructeurs
 
     public Lieu() {

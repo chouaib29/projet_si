@@ -9,6 +9,4 @@ public class MembreDTO {
     private String prenom;
     private Integer age;
     private String adresse;
-
-
 }
