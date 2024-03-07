@@ -64,7 +64,7 @@ export default {
     },
     supprimerEvenement(id) {
       axios
-          .delete(`/api/v1/evenement/${id}`) // Utilisation du préfixe "/api" configuré dans vue.config.js
+          .delete(`/api/v1/evenement/deleteEvenement/${id}`) // Utilisation du préfixe "/api" configuré dans vue.config.js
           .then(() => this.chargerEvenements())
           .catch((error) =>
               console.error("Erreur lors de la suppression de l'événement", error)
