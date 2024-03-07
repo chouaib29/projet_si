@@ -35,7 +35,7 @@ public class MembreController {
         return membreService.getMembreParNom(nom);
     }
 
-    @PostMapping
+    @PostMapping("/ajouter")
     public void registerNewMembre(@RequestBody Membre membre) {
         membreService.addNewMembre(membre);
     }
@@ -64,6 +64,11 @@ public class MembreController {
     public List<EvenementDTO> getEvenementsDuMembre(@PathVariable("membreId") Long membreId) {
         return evenementService.getEvenementsParMembre(membreId);
     }
+    @PostMapping("/deseinscrireDeEvent")
+    public void deseinscrireMembreDeEvent(@RequestParam Long membreId, @RequestParam Long eventId) {
+        membreService.deseinscrireMembreDeEvent(membreId, eventId);
+    }
+
 
     @PostMapping("/registerToEvent")
     public void registerMembreToEvent(@RequestParam Long membreId, @RequestParam Long eventId) {

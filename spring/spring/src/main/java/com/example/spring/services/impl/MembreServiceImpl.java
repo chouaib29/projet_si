@@ -149,4 +149,24 @@ public class MembreServiceImpl implements MembreService {
         return evenementService.isTimeConflict(event1, event2);
     }
 
+    public void deseinscrireMembreDeEvent(Long membreId, Long eventId) {
+        Membre membre = membreRepository.findById(membreId)
+                .orElseThrow(() -> new IllegalStateException("Membre with id " + membreId + " doesn't exist"));
+
+        Evenement event = evenementRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalStateException("Evenement with id " + eventId + " doesn't exist"));
+
+        // Vérifier si le membre est inscrit à l'événement
+        if (!membre.getEvenements().contains(event) || !event.getMembres().contains(membre)) {
+            throw new IllegalStateException("Member with id " + membreId + " is not registered for event with id " + eventId);
+        }
+
+        // Retirer le membre de l'événement
+        membre.getEvenements().remove(event);
+        event.getMembres().remove(membre);
+
+        // Enregistrer les modifications dans la base de données
+        membreRepository.save(membre);
+        evenementRepository.save(event);
+    }
 }

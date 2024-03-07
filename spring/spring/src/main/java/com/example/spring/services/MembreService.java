@@ -13,4 +13,6 @@ public interface MembreService {
     void deleteMembre(Long membreId);
     void updateMembre(Long membreId, String nom, String prenom, String adresse, Integer age);
     Membre getMembreParNom(String nom);
+
+    void deseinscrireMembreDeEvent(Long membreId, Long eventId);
 }
