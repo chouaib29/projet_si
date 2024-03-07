@@ -25,6 +25,36 @@
       </tr>
       </tbody>
     </table>
+
+    <!-- Table pour afficher les événements -->
+    <div v-if="evenementsDuMembre.length > 0">
+      <h2>Événements du membre</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>Nom de l'événement</th>
+          <th>Date et heure</th>
+          <!-- Ajoutez d'autres colonnes si nécessaire -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="evenement in evenementsDuMembre" :key="evenement.id">
+          <td>{{ evenement.nom }}</td>
+          <td>{{ evenement.date_heure }}</td>
+          <!-- Ajoutez d'autres cellules si nécessaire -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-else-if="evenementsCharge && evenementsDuMembre.length === 0">
+      <p>Aucun événement pour ce membre.</p>
+    </div>
+    <div v-else-if="!evenementsCharge">
+      <p>Chargement des événements...</p>
+    </div>
+    <div v-else>
+      <p>Aucun événement pour ce membre.</p>
+    </div>
   </div>
 </template>
 
@@ -35,17 +65,15 @@ export default {
   data() {
     return {
       membres: [],
+      evenementsDuMembre: [],
+      evenementsCharge: false,
     };
-  },
-  mounted() {
-    this.chargerMembres();
   },
   methods: {
     chargerMembres() {
       axios
-          .get("/api/v1/membre/lister") // Utilisation du préfixe "/api" configuré dans vue.config.js
+          .get("/api/v1/membre/lister")
           .then((response) => {
-            console.log("Afficher les événements pour le membre ID:", response.data);
             this.membres = response.data;
           })
           .catch((error) =>
@@ -53,17 +81,20 @@ export default {
           );
     },
     voirEvenements(idMembre) {
-      console.log("Afficher les événements pour le membre ID:", idMembre);
-
-      // Appel au service pour récupérer les événements du membre
+      this.evenementsCharge = true; // Indique que les événements sont en cours de chargement
       axios
           .get(`/api/v1/membre/${idMembre}/evenements`)
           .then((response) => {
             this.evenementsDuMembre = response.data;
-            console.log("Événements du membre:", this.evenementsDuMembre);
           })
           .catch((error) => {
-            console.error("Erreur lors du chargement des événements du membre", error);
+            console.error(
+                "Erreur lors du chargement des événements du membre",
+                error
+            );
+          })
+          .finally(() => {
+            this.evenementsCharge = false; // Fin du chargement des événements
           });
     },
     supprimerMembre(id) {
@@ -78,7 +109,9 @@ export default {
         console.error("ID du membre non défini lors de la suppression");
       }
     },
-
+  },
+  mounted() {
+    this.chargerMembres();
   },
 };
 </script>
