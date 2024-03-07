@@ -40,6 +40,7 @@ public class MembreServiceImpl implements MembreService {
 
     private MembreDTO convertToDTO(Membre membre) {
         MembreDTO membreDTO = new MembreDTO();
+        membreDTO.setId(membre.getId());
         membreDTO.setNom(membre.getNom());
         membreDTO.setPrenom(membre.getPrenom());
         membreDTO.setAge(membre.getAge());

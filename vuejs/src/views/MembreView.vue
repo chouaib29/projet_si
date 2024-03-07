@@ -57,13 +57,18 @@ export default {
       // Implémenter la logique pour afficher les événements d'un membre
     },
     supprimerMembre(id) {
-      axios
-          .delete(`/api/v1/membre/${id}`) // Utilisation du préfixe "/api" configuré dans vue.config.js
-          .then(() => this.chargerMembres())
-          .catch((error) =>
-              console.error("Erreur lors de la suppression", error)
-          );
+      if (id) {
+        axios
+            .delete(`/api/v1/membre/${id}`)
+            .then(() => this.chargerMembres())
+            .catch((error) =>
+                console.error("Erreur lors de la suppression", error)
+            );
+      } else {
+        console.error("ID du membre non défini lors de la suppression");
+      }
     },
+
   },
 };
 </script>
