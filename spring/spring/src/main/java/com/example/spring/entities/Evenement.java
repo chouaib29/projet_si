@@ -2,6 +2,7 @@ package com.example.spring.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -43,6 +44,7 @@ public class Evenement {
             joinColumns = @JoinColumn(name = "id_evnt"),
             inverseJoinColumns = @JoinColumn(name = "id_membre")
     )
+    @JsonIgnore // To prevent the infinite loop
     private Set<Membre> membres;
 
     // Constructors
