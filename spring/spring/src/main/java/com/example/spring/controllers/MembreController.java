@@ -1,10 +1,13 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dtos.EvenementDTO;
 import com.example.spring.dtos.MembreDTO;
 import com.example.spring.entities.Membre;
+import com.example.spring.services.EvenementService;
 import com.example.spring.services.impl.MembreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class MembreController {
 
     private final MembreServiceImpl membreService;
+    private final EvenementService evenementService;
 
     @Autowired
-    public MembreController(MembreServiceImpl membreService){
+    public MembreController(MembreServiceImpl membreService, EvenementService evenementService){
         this.membreService = membreService;
+        this.evenementService = evenementService;
     }
 
     @GetMapping("/lister")
@@ -52,6 +57,12 @@ public class MembreController {
                 prenom,
                 adresse,
                 age);
+    }
+
+
+    @GetMapping("/{membreId}/evenements")
+    public List<EvenementDTO> getEvenementsDuMembre(@PathVariable("membreId") Long membreId) {
+        return evenementService.getEvenementsParMembre(membreId);
     }
 
     @PostMapping("/registerToEvent")

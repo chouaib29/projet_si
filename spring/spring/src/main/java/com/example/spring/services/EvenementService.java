@@ -15,4 +15,6 @@ public interface EvenementService {
 
     boolean isTimeConflict(EvenementDTO event1, EvenementDTO event2);
     boolean isTimeConflict(Evenement event1, Evenement event2);
+
+    List<EvenementDTO> getEvenementsParMembre(Long membreId);
 }

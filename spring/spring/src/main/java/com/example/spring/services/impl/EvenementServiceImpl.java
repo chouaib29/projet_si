@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EvenementServiceImpl implements EvenementService {
@@ -86,6 +87,17 @@ public class EvenementServiceImpl implements EvenementService {
         // Appelle la première méthode avec les objets EvenementDTO convertis
         return isTimeConflict(dto1, dto2);
     }
+
+    @Override
+    public List<EvenementDTO> getEvenementsParMembre(Long membreId) {
+        List<Evenement> evenements = evenementRepository.findByMembres_Id(membreId);
+
+        return evenements.stream()
+                .map(this::EvenementEntityToDao)
+                .collect(Collectors.toList());
+    }
+
+
 
     /**
      * Supprime un événement de la base de données par son identifiant.

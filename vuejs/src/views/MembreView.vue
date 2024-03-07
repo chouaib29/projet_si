@@ -54,7 +54,17 @@ export default {
     },
     voirEvenements(idMembre) {
       console.log("Afficher les événements pour le membre ID:", idMembre);
-      // Implémenter la logique pour afficher les événements d'un membre
+
+      // Appel au service pour récupérer les événements du membre
+      axios
+          .get(`/api/v1/membre/${idMembre}/evenements`)
+          .then((response) => {
+            this.evenementsDuMembre = response.data;
+            console.log("Événements du membre:", this.evenementsDuMembre);
+          })
+          .catch((error) => {
+            console.error("Erreur lors du chargement des événements du membre", error);
+          });
     },
     supprimerMembre(id) {
       if (id) {
