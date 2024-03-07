@@ -167,6 +167,7 @@ public class EvenementServiceImpl implements EvenementService {
     private EvenementDTO EvenementEntityToDao(Evenement evenement){
         EvenementDTO evenementDTO = new EvenementDTO();
         evenementDTO.setId_evnt(evenement.getId());
+        evenementDTO.setNom(evenement.getNom());
         evenementDTO.setDate_heure(evenement.getDateHeure());
         evenementDTO.setDuree(evenement.getDuree());
         evenementDTO.setDuree(evenement.getDuree());
