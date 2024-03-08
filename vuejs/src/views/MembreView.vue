@@ -72,16 +72,20 @@
     <div v-if="afficherNouveauMembre">
       <h2>Ajouter un membre</h2>
       <form @submit.prevent="ajouterMembre">
-        <label for="nom">Nom:</label>
-        <input type="text" id="nom" v-model="nouveauMembre.nom" required />
+        <div class="form-group col-md-6">
+          <label for="nom">Nom:</label>
+          <input type="text" id="nom" v-model="nouveauMembre.nom" required />
+        </div>
 
-        <label for="prenom">Prénom:</label>
-        <input
-          type="text"
-          id="prenom"
-          v-model="nouveauMembre.prenom"
-          required
-        />
+        <div class="form-group col-md-6">
+          <label for="prenom">Prénom:</label>
+          <input
+            type="text"
+            id="prenom"
+            v-model="nouveauMembre.prenom"
+            required
+          />
+        </div>
 
         <label for="adresse">Adresse:</label>
         <input

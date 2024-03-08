@@ -3,7 +3,7 @@ import AccueilView from "../views/AccueilView.vue";
 import MembreView from "../views/MembreView.vue";
 import EvenementView from "../views/EvenementView.vue";
 import LieuView from "../views/LieuView.vue";
-import CommentairesView from "../views/Commentaires.vue";
+import CommentairesView from "../views/CommentairesView.vue";
 
 const routes = [
   {

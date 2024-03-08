@@ -5,7 +5,7 @@
     <div class="hello">
       <p>Bienvenue</p>
       <h1 id="titre-accueil">GESTION EVENEMENT</h1>
-      <p>Chouaib <strong>Daili</strong> / Moetez <strong>Chouaikha</strong></p>
+      <p>Chouaib <strong>Daili</strong> / Moetez <strong>Chouikha</strong></p>
       <p>Anas <strong>Fouad</strong> / Mohamed Amine <strong>EL MOH</strong></p>
     </div>
   </div>
