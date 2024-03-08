@@ -17,7 +17,9 @@
           <td>{{ membre.prenom }}</td>
           <td>{{ membre.adresse }}</td>
           <td>
-            <button @click="voirEvenements(membre.id)">Voir Événements</button>
+            <button @click="setMembreActuel(membre.id)">
+              {{ isMembreInscrit(membre.id) ? "Événements" : "Inscription" }}
+            </button>
           </td>
           <td>
             <button @click="supprimerMembre(membre.id)">Supprimer</button>
@@ -28,7 +30,9 @@
 
     <!-- Table pour afficher les événements -->
     <div v-if="evenementsDuMembre.length > 0">
-      <h2>Événements du membre</h2>
+      <h2>
+        Événements du membre {{ membreActuel.nom }} {{ membreActuel.prenom }}
+      </h2>
       <table>
         <thead>
           <tr>
@@ -47,17 +51,14 @@
               </button>
             </td>
           </tr>
+          <tr>
+            <button @click="afficherFormulaireInscription()">Inscrire</button>
+          </tr>
         </tbody>
       </table>
     </div>
-    <div v-else-if="evenementsCharge && evenementsDuMembre.length === 0">
-      <p>Aucun événement pour ce membre.</p>
-    </div>
-    <div v-else-if="!evenementsCharge">
-      <p>Chargement des événements...</p>
-    </div>
-    <div v-else>
-      <p>Aucun événement pour ce membre.</p>
+    <div v-else-if="evenementsDuMembre.length === 0">
+      <p>Aucun événement pour le membre.</p>
     </div>
 
     <!-- Bouton pour afficher/masquer le formulaire -->
@@ -102,6 +103,20 @@
         <button type="submit">Ajouter Membre</button>
       </form>
     </div>
+
+    <div v-if="showInscriptionForm">
+      <!-- Form lier un membre à un événement -->
+      <form @submit.prevent="inscrireMembre(membreActuel.id, selectedEvent)">
+        <label for="eventSelect">Sélectionner un événement : </label>
+        <select v-model="selectedEvent" id="eventSelect" required>
+          <option v-for="event in allEvents" :key="event.id" :value="event.id">
+            {{ event.nom }}
+          </option>
+        </select>
+
+        <button type="submit">Enregistrer</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -113,7 +128,6 @@ export default {
     return {
       membres: [],
       evenementsDuMembre: [],
-      evenementsCharge: false,
       nouveauMembre: {
         nom: "",
         prenom: "",
@@ -123,37 +137,66 @@ export default {
       },
       afficherNouveauMembre: false,
       membreActuel: null, // Ajoutez membreActuel comme propriété de données
+      allEvents: [],
+      selectedEvent: null,
+      showInscriptionForm: false,
     };
   },
   methods: {
-    chargerMembres() {
-      axios
-        .get("/api/v1/membre/lister")
-        .then((response) => {
-          this.membres = response.data;
-        })
-        .catch((error) =>
-          console.error("Erreur lors du chargement des membres", error)
+    async chargerMembres() {
+      try {
+        const membersResponse = await axios.get("/api/v1/membre/lister");
+        const members = membersResponse.data;
+
+        // GET des evenements pour chaque memebre
+        await Promise.all(
+          members.map(async (membre) => {
+            try {
+              const eventsResponse = await axios.get(
+                `/api/v1/membre/${membre.id}/evenements`
+              );
+              membre.evenementsDuMembre = eventsResponse.data;
+            } catch (error) {
+              console.error(
+                `Erreur lors du chargement des événements du membre ${membre.id}`,
+                error
+              );
+              membre.evenementsDuMembre = [];
+            }
+          })
         );
+
+        // GET de tout les événement disponibles
+        const allEventsResponse = await axios.get(
+          "/api/v1/evenement/getAllEvenement"
+        );
+        this.allEvents = allEventsResponse.data;
+
+        // Les membres
+        this.membres = members;
+      } catch (error) {
+        console.error("Erreur Lors du chargement des membres", error);
+      }
     },
-    voirEvenements(idMembre) {
-      this.membreActuel = this.membres.find((membre) => membre.id === idMembre);
-      this.evenementsCharge = true;
-      axios
-        .get(`/api/v1/membre/${idMembre}/evenements`)
-        .then((response) => {
-          this.evenementsDuMembre = response.data;
-        })
-        .catch((error) => {
-          console.error(
-            "Erreur lors du chargement des événements du membre",
-            error
-          );
-        })
-        .finally(() => {
-          this.evenementsCharge = false;
-        });
+
+    setMembreActuel(idMembre) {
+      try {
+        this.membreActuel = this.membres.find(
+          (membre) => membre.id === idMembre
+        );
+        this.evenementsDuMembre = this.membreActuel.evenementsDuMembre || [];
+
+        this.evenementsDuMembre.length > 0
+          ? (this.showInscriptionForm = false)
+          : (this.showInscriptionForm = true);
+      } catch (error) {
+        console.error(
+          "Erreur lors du chargement des événements du membre",
+          error
+        );
+      }
     },
+
     supprimerMembre(id) {
       if (id) {
         axios
@@ -166,9 +209,11 @@ export default {
         console.error("ID du membre non défini lors de la suppression");
       }
     },
+
     afficherFormulaire() {
       this.afficherNouveauMembre = !this.afficherNouveauMembre;
     },
+
     ajouterMembre() {
       axios
         .post("/api/v1/membre/ajouter", this.nouveauMembre)
@@ -187,6 +232,7 @@ export default {
           console.error("Erreur lors de l'ajout du membre", error)
         );
     },
+
     desinscrireMembre(evenement) {
       console.log("Evenement:", evenement);
 
@@ -201,7 +247,7 @@ export default {
             `/api/v1/membre/deseinscrireDeEvent?membreId=${idMembre}&eventId=${idEvenement}`
           )
           .then(() => {
-            this.voirEvenements(idMembre);
+            this.setMembreActuel(idMembre);
           })
           .catch((error) => {
             console.error(
@@ -215,7 +261,49 @@ export default {
         );
       }
     },
+
+    isMembreInscrit(memberId) {
+      try {
+        const membre = this.membres.find((m) => m.id === memberId);
+        return membre ? membre.evenementsDuMembre.length > 0 : false;
+      } catch (error) {
+        console.error("An error occurred in isMembreInscrit", error);
+        return false;
+      }
+    },
+
+    inscrireMembre(memberId, eventId) {
+      try {
+        // Ensure both member and event are selected
+        if (memberId && eventId) {
+          // Update your API endpoint to match the working one
+          const apiUrl = `/api/v1/membre/registerToEvent?membreId=${memberId}&eventId=${eventId}`;
+
+          // Perform the linking operation using your updated API endpoint
+          axios
+            .post(apiUrl)
+            .then(() => {
+              // Optionally, you can update your data or show a success message
+              console.log("Member linked to event successfully");
+            })
+            .catch((error) => {
+              console.error("Error linking member to event", error);
+            });
+        } else {
+          console.error("Both member and event must be selected.");
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred", error);
+      }
+    },
+
+    afficherFormulaireInscription() {
+      console.log("afficherFormulaireInscriotion clicked");
+      this.showInscriptionForm = true;
+      this.selectedEvent = null;
+    },
   },
+
   mounted() {
     this.chargerMembres();
   },
