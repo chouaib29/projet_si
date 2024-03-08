@@ -3,6 +3,7 @@ import AccueilView from "../views/AccueilView.vue";
 import MembreView from "../views/MembreView.vue";
 import EvenementView from "../views/EvenementView.vue";
 import LieuView from "../views/LieuView.vue";
+import CommentairesView from "../views/Commentaires.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/lieux",
     name: "lieux",
     component: LieuView,
+  },
+  {
+    path: "/commentaires",
+    name: "commentaires",
+    component: CommentairesView,
   },
 ];
 

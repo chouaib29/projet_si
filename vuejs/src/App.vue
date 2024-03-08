@@ -4,6 +4,7 @@
     <router-link to="/membres">Membres</router-link> |
     <router-link to="/evenements">Evenements</router-link> |
     <router-link to="/lieux">Lieux</router-link> |
+    <router-link to="/commentaires">Commentaires</router-link> |
   </nav>
   <router-view />
 </template>
