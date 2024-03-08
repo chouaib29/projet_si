@@ -37,7 +37,7 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #daae6b;
+      color: #28a745;
     }
   }
 }

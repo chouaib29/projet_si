@@ -22,7 +22,9 @@
             </button>
           </td>
           <td>
-            <button @click="supprimerMembre(membre.id)">Supprimer</button>
+            <button class="rouge" @click="supprimerMembre(membre.id)">
+              Supprimer
+            </button>
           </td>
         </tr>
       </tbody>
@@ -311,21 +313,99 @@ export default {
 </script>
 
 <style scoped>
-.membres {
-  margin: 20px;
+/* Style de base pour le conteneur principal */
+.membres,
+.evenements {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button.rouge {
+  background-color: #dc3545;
+}
+
+button.rouge:hover {
+  background-color: #c82333;
+}
+
+/* Style pour le formulaire */
+form {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 4px;
   border: 1px solid #ccc;
 }
 
-form {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
+form button {
+  width: auto;
+  padding: 10px 15px;
+  background-color: #28a745;
 }
 
-.rouge {
-  background-color: red;
-  color: white;
+form button:hover {
+  background-color: #218838;
+}
+
+/* Annuler bouton style */
+button[type="button"] {
+  background-color: #6c757d;
+}
+
+button[type="button"]:hover {
+  background-color: #5a6268;
 }
 </style>
